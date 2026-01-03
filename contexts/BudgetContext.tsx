@@ -1,6 +1,6 @@
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export interface Expense {
   id: string;
@@ -36,27 +36,30 @@ interface BudgetContextType {
 
 const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
 
-const STORAGE_KEY = '@survival_budget_data';
+const STORAGE_KEY = '@budget_data';
 
-const defaultData: BudgetData = {
-  monthlyIncome: 0,
-  totalSavings: 0,
-  expenses: [],
-  survivalMode: false,
-  currency: '$',
-};
+export function useBudget() {
+  const context = useContext(BudgetContext);
+  if (!context) {
+    throw new Error('useBudget must be used within a BudgetProvider');
+  }
+  return context;
+}
 
 export function BudgetProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<BudgetData>(defaultData);
+  const [data, setData] = useState<BudgetData>({
+    monthlyIncome: 0,
+    totalSavings: 0,
+    expenses: [],
+    survivalMode: false,
+    currency: '$',
+  });
   const [loading, setLoading] = useState(true);
 
-  // Load data from AsyncStorage on mount
   useEffect(() => {
-    console.log('BudgetProvider mounted, loading data...');
     loadData();
   }, []);
 
-  // Save data to AsyncStorage whenever it changes
   useEffect(() => {
     if (!loading) {
       saveData();
@@ -65,40 +68,30 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
 
   const loadData = async () => {
     try {
-      console.log('Loading budget data from AsyncStorage...');
-      const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
-      if (jsonValue != null) {
-        const loadedData = JSON.parse(jsonValue);
-        setData(loadedData);
-        console.log('Budget data loaded successfully:', loadedData);
-      } else {
-        console.log('No existing budget data found, using defaults');
+      const stored = await AsyncStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        setData(JSON.parse(stored));
       }
-    } catch (e) {
-      console.error('Error loading budget data:', e);
+    } catch (error) {
+      console.error('Error loading data:', error);
     } finally {
       setLoading(false);
-      console.log('Budget data loading complete');
     }
   };
 
   const saveData = async () => {
     try {
-      const jsonValue = JSON.stringify(data);
-      await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
-      console.log('Budget data saved successfully');
-    } catch (e) {
-      console.error('Error saving budget data:', e);
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (error) {
+      console.error('Error saving data:', error);
     }
   };
 
   const setMonthlyIncome = (amount: number) => {
-    console.log('Setting monthly income:', amount);
     setData(prev => ({ ...prev, monthlyIncome: amount }));
   };
 
   const setTotalSavings = (amount: number) => {
-    console.log('Setting total savings:', amount);
     setData(prev => ({ ...prev, totalSavings: amount }));
   };
 
@@ -108,52 +101,40 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       id: Date.now().toString(),
       date: new Date().toISOString(),
     };
-    console.log('Adding expense:', newExpense);
-    setData(prev => ({
-      ...prev,
-      expenses: [...prev.expenses, newExpense],
-    }));
+    setData(prev => ({ ...prev, expenses: [...prev.expenses, newExpense] }));
   };
 
   const deleteExpense = (id: string) => {
-    console.log('Deleting expense:', id);
     setData(prev => ({
       ...prev,
-      expenses: prev.expenses.filter(exp => exp.id !== id),
+      expenses: prev.expenses.filter(e => e.id !== id),
     }));
   };
 
   const toggleSurvivalMode = () => {
-    console.log('Toggling survival mode');
     setData(prev => ({ ...prev, survivalMode: !prev.survivalMode }));
   };
 
   const setCurrency = (currency: string) => {
-    console.log('Setting currency:', currency);
     setData(prev => ({ ...prev, currency }));
   };
 
   const resetData = async () => {
-    try {
-      console.log('Resetting budget data...');
-      await AsyncStorage.removeItem(STORAGE_KEY);
-      setData(defaultData);
-      console.log('Budget data reset successfully');
-    } catch (e) {
-      console.error('Error resetting budget data:', e);
-    }
+    const newData: BudgetData = {
+      monthlyIncome: 0,
+      totalSavings: 0,
+      expenses: [],
+      survivalMode: false,
+      currency: '$',
+    };
+    setData(newData);
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
   };
-
-  console.log('BudgetProvider rendering, loading:', loading);
 
   return (
     <BudgetContext.Provider
       value={{
-        monthlyIncome: data.monthlyIncome,
-        totalSavings: data.totalSavings,
-        expenses: data.expenses,
-        survivalMode: data.survivalMode,
-        currency: data.currency,
+        ...data,
         setMonthlyIncome,
         setTotalSavings,
         addExpense,
@@ -167,12 +148,4 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       {children}
     </BudgetContext.Provider>
   );
-}
-
-export function useBudget() {
-  const context = useContext(BudgetContext);
-  if (context === undefined) {
-    throw new Error('useBudget must be used within a BudgetProvider');
-  }
-  return context;
 }

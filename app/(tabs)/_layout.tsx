@@ -1,78 +1,51 @@
 
 import React from 'react';
-import { Tabs } from 'expo-router';
-import { IconSymbol } from '@/components/IconSymbol';
-import { colors } from '@/styles/commonStyles';
-import { useColorScheme } from 'react-native';
+import { Stack } from 'expo-router';
+import FloatingTabBar, { TabBarItem } from '@/components/FloatingTabBar';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  // Define the tabs configuration
+  const tabs: TabBarItem[] = [
+    {
+      name: 'index',
+      route: '/(tabs)/',
+      icon: 'analytics',
+      label: 'Overview',
+    },
+    {
+      name: 'expenses',
+      route: '/(tabs)/expenses',
+      icon: 'receipt',
+      label: 'Expenses',
+    },
+    {
+      name: 'survival',
+      route: '/(tabs)/survival',
+      icon: 'shield',
+      label: 'Survival',
+    },
+    {
+      name: 'settings',
+      route: '/(tabs)/settings',
+      icon: 'settings',
+      label: 'Settings',
+    },
+  ];
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: isDark ? '#98989D' : '#8E8E93',
-        tabBarStyle: {
-          backgroundColor: isDark ? '#1C1C1E' : '#FFFFFF',
-          borderTopColor: isDark ? '#38383A' : '#E5E5EA',
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Overview',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol 
-              ios_icon_name="chart.bar.fill" 
-              android_material_icon_name="home" 
-              color={color} 
-            />
-          ),
+    <>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          animation: 'none',
         }}
-      />
-      <Tabs.Screen
-        name="expenses"
-        options={{
-          title: 'Expenses',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol 
-              ios_icon_name="list.bullet" 
-              android_material_icon_name="receipt" 
-              color={color} 
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="survival"
-        options={{
-          title: 'Survival',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol 
-              ios_icon_name="shield.checkmark" 
-              android_material_icon_name="security" 
-              color={color} 
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => (
-            <IconSymbol 
-              ios_icon_name="gear" 
-              android_material_icon_name="settings" 
-              color={color} 
-            />
-          ),
-        }}
-      />
-    </Tabs>
+      >
+        <Stack.Screen key="overview" name="index" />
+        <Stack.Screen key="expenses" name="expenses" />
+        <Stack.Screen key="survival" name="survival" />
+        <Stack.Screen key="settings" name="settings" />
+      </Stack>
+      <FloatingTabBar tabs={tabs} />
+    </>
   );
 }

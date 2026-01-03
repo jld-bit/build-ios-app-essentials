@@ -6,16 +6,16 @@ export default function TabLayout() {
   return (
     <NativeTabs>
       <NativeTabs.Trigger key="overview" name="index">
-        <Icon sf="chart.pie.fill" />
+        <Icon sf="chart.bar.fill" />
         <Label>Overview</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger key="expenses" name="expenses">
-        <Icon sf="list.bullet" />
+        <Icon sf="receipt.fill" />
         <Label>Expenses</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger key="survival" name="survival">
         <Icon sf="shield.fill" />
-        <Label>Survival Mode</Label>
+        <Label>Survival</Label>
       </NativeTabs.Trigger>
       <NativeTabs.Trigger key="settings" name="settings">
         <Icon sf="gearshape.fill" />

@@ -1,34 +1,35 @@
+
 {
   "expo": {
-    "name": "Build iOS App",
-    "slug": "Build iOS App",
+    "name": "Survival Budget",
+    "slug": "survival-budget",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/natively-dark.png",
+    "icon": "./assets/images/0cc5be7a-d009-4608-97c1-eead90b51cc9.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/natively-dark.png",
+      "image": "./assets/images/0cc5be7a-d009-4608-97c1-eead90b51cc9.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#4AAED9"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.Natively",
+      "bundleIdentifier": "com.survivalbudget.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/natively-dark.png",
-        "backgroundColor": "#000000"
+        "foregroundImage": "./assets/images/0cc5be7a-d009-4608-97c1-eead90b51cc9.png",
+        "backgroundColor": "#4AAED9"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.Natively"
+      "package": "com.survivalbudget.app"
     },
     "web": {
-      "favicon": "./assets/images/final_quest_240x240.png",
+      "favicon": "./assets/images/0cc5be7a-d009-4608-97c1-eead90b51cc9.png",
       "bundler": "metro"
     },
     "plugins": [
@@ -36,14 +37,12 @@
       "expo-router",
       "expo-web-browser"
     ],
-    "scheme": "natively",
+    "scheme": "survivalbudget",
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
-      "backendUrl": "https://a2bwn6aekt9r92catrv9kqhgbq6zp7sf.app.specular.dev"
+      "router": {}
     }
-  },
-  "scheme": "Build iOS App"
+  }
 }

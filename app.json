@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "Essential Only",
@@ -41,8 +42,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
-      "backendUrl": "https://a2bwn6aekt9r92catrv9kqhgbq6zp7sf.app.specular.dev"
+      "router": {}
     }
   }
 }

@@ -41,7 +41,8 @@
       "typedRoutes": true
     },
     "extra": {
-      "router": {}
+      "router": {},
+      "backendUrl": "https://a2bwn6aekt9r92catrv9kqhgbq6zp7sf.app.specular.dev"
     }
   },
   "scheme": "Build iOS App"

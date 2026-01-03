@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBudget } from '@/contexts/BudgetContext';
@@ -25,10 +26,23 @@ export default function OverviewScreen() {
     currency,
     setMonthlyIncome,
     setTotalSavings,
+    loading,
   } = useBudget();
 
   const [incomeInput, setIncomeInput] = useState(monthlyIncome.toString());
   const [savingsInput, setSavingsInput] = useState(totalSavings.toString());
+
+  useEffect(() => {
+    console.log('OverviewScreen mounted');
+  }, []);
+
+  useEffect(() => {
+    setIncomeInput(monthlyIncome.toString());
+  }, [monthlyIncome]);
+
+  useEffect(() => {
+    setSavingsInput(totalSavings.toString());
+  }, [totalSavings]);
 
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const essentialExpenses = expenses
@@ -48,6 +62,19 @@ export default function OverviewScreen() {
     const value = parseFloat(savingsInput) || 0;
     setTotalSavings(value);
   };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.primary} />
+          <Text style={[styles.loadingText, { color: theme.textSecondary }]}>
+            Loading your budget...
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top']}>
@@ -230,6 +257,16 @@ export default function OverviewScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    fontWeight: '500',
   },
   scrollView: {
     flex: 1,

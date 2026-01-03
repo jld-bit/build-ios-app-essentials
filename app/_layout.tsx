@@ -8,10 +8,10 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { SystemBars } from "react-native-edge-to-edge";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useColorScheme } from "react-native";
+import { useColorScheme, View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { Stack } from "expo-router";
 import { BudgetProvider } from "@/contexts/BudgetContext";
 
@@ -22,16 +22,31 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
+  const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
+    console.log('RootLayout mounted');
     if (loaded) {
+      console.log('Fonts loaded, hiding splash screen');
       SplashScreen.hideAsync();
+      // Give a moment for everything to initialize
+      setTimeout(() => {
+        console.log('App ready');
+        setAppReady(true);
+      }, 100);
     }
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
+  if (!loaded || !appReady) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#4A90E2" />
+        <Text style={styles.loadingText}>Loading your budget app...</Text>
+      </View>
+    );
   }
+
+  console.log('Rendering main app');
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -55,3 +70,18 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F8F9FA',
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: '#6B7280',
+    fontWeight: '500',
+  },
+});

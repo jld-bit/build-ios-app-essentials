@@ -52,6 +52,7 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
 
   // Load data from AsyncStorage on mount
   useEffect(() => {
+    console.log('BudgetProvider mounted, loading data...');
     loadData();
   }, []);
 
@@ -64,16 +65,20 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
 
   const loadData = async () => {
     try {
+      console.log('Loading budget data from AsyncStorage...');
       const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
       if (jsonValue != null) {
         const loadedData = JSON.parse(jsonValue);
         setData(loadedData);
-        console.log('Budget data loaded successfully');
+        console.log('Budget data loaded successfully:', loadedData);
+      } else {
+        console.log('No existing budget data found, using defaults');
       }
     } catch (e) {
       console.error('Error loading budget data:', e);
     } finally {
       setLoading(false);
+      console.log('Budget data loading complete');
     }
   };
 
@@ -88,10 +93,12 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
   };
 
   const setMonthlyIncome = (amount: number) => {
+    console.log('Setting monthly income:', amount);
     setData(prev => ({ ...prev, monthlyIncome: amount }));
   };
 
   const setTotalSavings = (amount: number) => {
+    console.log('Setting total savings:', amount);
     setData(prev => ({ ...prev, totalSavings: amount }));
   };
 
@@ -101,6 +108,7 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       id: Date.now().toString(),
       date: new Date().toISOString(),
     };
+    console.log('Adding expense:', newExpense);
     setData(prev => ({
       ...prev,
       expenses: [...prev.expenses, newExpense],
@@ -108,6 +116,7 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
   };
 
   const deleteExpense = (id: string) => {
+    console.log('Deleting expense:', id);
     setData(prev => ({
       ...prev,
       expenses: prev.expenses.filter(exp => exp.id !== id),
@@ -115,15 +124,18 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
   };
 
   const toggleSurvivalMode = () => {
+    console.log('Toggling survival mode');
     setData(prev => ({ ...prev, survivalMode: !prev.survivalMode }));
   };
 
   const setCurrency = (currency: string) => {
+    console.log('Setting currency:', currency);
     setData(prev => ({ ...prev, currency }));
   };
 
   const resetData = async () => {
     try {
+      console.log('Resetting budget data...');
       await AsyncStorage.removeItem(STORAGE_KEY);
       setData(defaultData);
       console.log('Budget data reset successfully');
@@ -131,6 +143,8 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       console.error('Error resetting budget data:', e);
     }
   };
+
+  console.log('BudgetProvider rendering, loading:', loading);
 
   return (
     <BudgetContext.Provider

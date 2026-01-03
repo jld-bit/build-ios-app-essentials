@@ -1,45 +1,55 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Tabs } from 'expo-router';
 import FloatingTabBar from '@/components/FloatingTabBar';
-import { Stack } from 'expo-router';
+import { colors } from '@/styles/commonStyles';
+import { useColorScheme } from 'react-native';
 
 export default function TabLayout() {
+  const colorScheme = useColorScheme();
+  const theme = colorScheme === 'dark' ? colors.dark : colors.light;
+
+  useEffect(() => {
+    console.log('TabLayout mounted');
+  }, []);
+
   return (
-    <>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="expenses" />
-        <Stack.Screen name="survival" />
-        <Stack.Screen name="settings" />
-      </Stack>
-      <FloatingTabBar
-        tabs={[
-          {
-            route: '/(tabs)',
-            label: 'Overview',
-            ios_icon_name: 'chart.bar.fill',
-            android_material_icon_name: 'home',
-          },
-          {
-            route: '/(tabs)/expenses',
-            label: 'Expenses',
-            ios_icon_name: 'list.bullet',
-            android_material_icon_name: 'receipt',
-          },
-          {
-            route: '/(tabs)/survival',
-            label: 'Survival',
-            ios_icon_name: 'shield.fill',
-            android_material_icon_name: 'favorite',
-          },
-          {
-            route: '/(tabs)/settings',
-            label: 'Settings',
-            ios_icon_name: 'gearshape.fill',
-            android_material_icon_name: 'settings',
-          },
-        ]}
+    <Tabs
+      tabBar={(props) => <FloatingTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: theme.primary,
+        tabBarInactiveTintColor: theme.textSecondary,
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Overview',
+          tabBarIcon: ({ color }) => 'home',
+        }}
       />
-    </>
+      <Tabs.Screen
+        name="expenses"
+        options={{
+          title: 'Expenses',
+          tabBarIcon: ({ color }) => 'receipt',
+        }}
+      />
+      <Tabs.Screen
+        name="survival"
+        options={{
+          title: 'Survival',
+          tabBarIcon: ({ color }) => 'shield',
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => 'settings',
+        }}
+      />
+    </Tabs>
   );
 }

@@ -1,7 +1,8 @@
+
 {
   "expo": {
-    "name": "Build iOS App",
-    "slug": "Build iOS App",
+    "name": "Essential Only",
+    "slug": "essential-only",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/final_quest_240x240.png",
@@ -10,11 +11,11 @@
     "splash": {
       "image": "./assets/images/final_quest_240x240.png",
       "resizeMode": "contain",
-      "backgroundColor": "#E8F4F8"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.essentialonly",
+      "bundleIdentifier": "com.essentialonly.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -22,10 +23,10 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/final_quest_240x240.png",
-        "backgroundColor": "#E8F4F8"
+        "backgroundColor": "#FFFFFF"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.essentialonly"
+      "package": "com.essentialonly.app"
     },
     "web": {
       "favicon": "./assets/images/final_quest_240x240.png",
@@ -36,14 +37,12 @@
       "expo-router",
       "expo-web-browser"
     ],
-    "scheme": "essentialonly",
+    "scheme": "essential-only",
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
-      "backendUrl": "https://a2bwn6aekt9r92catrv9kqhgbq6zp7sf.app.specular.dev"
+      "router": {}
     }
-  },
-  "scheme": "Build iOS App"
+  }
 }

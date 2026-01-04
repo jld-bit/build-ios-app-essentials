@@ -1,8 +1,9 @@
+
 {
   "expo": {
     "name": "Natively",
     "slug": "Natively",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/natively-dark.png",
     "userInterfaceStyle": "automatic",
@@ -41,8 +42,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
-      "backendUrl": "https://p224e2efg43t5hxxxsagexa4xwgxbw4n.app.specular.dev"
+      "router": {}
     }
   }
 }

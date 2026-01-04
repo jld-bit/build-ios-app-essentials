@@ -16,15 +16,18 @@ import { useBudget } from '@/contexts/BudgetContext';
 export default function OverviewScreen() {
   const {
     monthlyIncome,
+    totalSavings,
     expenses,
     currency,
     setMonthlyIncome,
+    setTotalSavings,
     loading,
   } = useBudget();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
   const [incomeInput, setIncomeInput] = useState(monthlyIncome.toString());
+  const [savingsInput, setSavingsInput] = useState(totalSavings.toString());
 
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const essentialExpenses = expenses
@@ -34,6 +37,9 @@ export default function OverviewScreen() {
     .filter(e => e.category === 'non-essential')
     .reduce((sum, exp) => sum + exp.amount, 0);
   const remaining = monthlyIncome - totalExpenses;
+
+  // Calculate Months of Runway
+  const monthsOfRunway = totalExpenses > 0 ? totalSavings / totalExpenses : 0;
 
   if (loading) {
     return (
@@ -72,6 +78,54 @@ export default function OverviewScreen() {
             />
           </View>
         </View>
+
+        <View style={[styles.card, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}>
+          <Text style={[styles.label, { color: isDark ? '#b0b0b0' : '#666' }]}>
+            Total Savings
+          </Text>
+          <View style={styles.inputRow}>
+            <Text style={[styles.currencySymbol, { color: isDark ? '#f0f0f0' : '#323232' }]}>
+              {currency}
+            </Text>
+            <TextInput
+              style={[styles.input, { color: isDark ? '#f0f0f0' : '#323232', borderColor: isDark ? '#323232' : '#dcdcdc' }]}
+              value={savingsInput}
+              onChangeText={setSavingsInput}
+              onBlur={() => setTotalSavings(parseFloat(savingsInput) || 0)}
+              keyboardType="numeric"
+              placeholder="0"
+              placeholderTextColor={isDark ? '#666' : '#999'}
+            />
+          </View>
+        </View>
+
+        {totalExpenses > 0 && (
+          <View style={[styles.runwayCard, { backgroundColor: isDark ? '#2a2a3e' : '#f0f4ff' }]}>
+            <Text style={[styles.runwayLabel, { color: isDark ? '#b0b0b0' : '#666' }]}>
+              Months of Runway
+            </Text>
+            <Text style={[styles.runwayValue, { color: isDark ? '#8ab4f8' : '#4285f4' }]}>
+              {monthsOfRunway.toFixed(1)} months
+            </Text>
+            <Text style={[styles.runwayFormula, { color: isDark ? '#808080' : '#999' }]}>
+              {currency}{totalSavings.toFixed(2)} ÷ {currency}{totalExpenses.toFixed(2)} = {monthsOfRunway.toFixed(1)} months
+            </Text>
+          </View>
+        )}
+
+        {totalExpenses === 0 && totalSavings > 0 && (
+          <View style={[styles.runwayCard, { backgroundColor: isDark ? '#2a2a3e' : '#f0f4ff' }]}>
+            <Text style={[styles.runwayLabel, { color: isDark ? '#b0b0b0' : '#666' }]}>
+              Months of Runway
+            </Text>
+            <Text style={[styles.runwayValue, { color: isDark ? '#8ab4f8' : '#4285f4' }]}>
+              ∞ months
+            </Text>
+            <Text style={[styles.runwayFormula, { color: isDark ? '#808080' : '#999' }]}>
+              Add expenses to calculate runway
+            </Text>
+          </View>
+        )}
 
         <View style={[styles.card, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}>
           <Text style={[styles.cardTitle, { color: isDark ? '#f0f0f0' : '#323232' }]}>
@@ -161,6 +215,32 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     borderBottomWidth: 2,
     paddingVertical: 8,
+  },
+  runwayCard: {
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  runwayLabel: {
+    fontSize: 14,
+    marginBottom: 8,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  runwayValue: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  runwayFormula: {
+    fontSize: 13,
+    textAlign: 'center',
   },
   cardTitle: {
     fontSize: 18,

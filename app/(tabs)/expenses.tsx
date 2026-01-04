@@ -37,6 +37,7 @@ export default function ExpensesScreen() {
     addExpense({
       name: expenseName.trim(),
       amount,
+      category: 'essential',
     });
 
     setExpenseName('');
@@ -115,35 +116,37 @@ export default function ExpensesScreen() {
               No expenses added yet
             </Text>
           ) : (
-            expenses.map((expense) => (
-              <View
-                key={expense.id}
-                style={[
-                  styles.expenseItem,
-                  { backgroundColor: isDark ? '#2c2c2e' : '#fff' },
-                ]}
-              >
-                <View style={styles.expenseInfo}>
-                  <Text style={[styles.expenseName, { color: isDark ? '#fff' : '#000' }]}>
-                    {expense.name}
-                  </Text>
-                  <Text style={[styles.expenseAmount, { color: isDark ? '#fff' : '#000' }]}>
-                    {currency}{expense.amount.toFixed(2)}
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  onPress={() => handleDeleteExpense(expense.id, expense.name)}
-                  style={styles.deleteButton}
+            <React.Fragment>
+              {expenses.map((expense, index) => (
+                <View
+                  key={`${expense.id}-${index}`}
+                  style={[
+                    styles.expenseItem,
+                    { backgroundColor: isDark ? '#2c2c2e' : '#fff' },
+                  ]}
                 >
-                  <IconSymbol
-                    ios_icon_name="trash"
-                    android_material_icon_name="delete"
-                    size={20}
-                    color="#ff3b30"
-                  />
-                </TouchableOpacity>
-              </View>
-            ))
+                  <View style={styles.expenseInfo}>
+                    <Text style={[styles.expenseName, { color: isDark ? '#fff' : '#000' }]}>
+                      {expense.name}
+                    </Text>
+                    <Text style={[styles.expenseAmount, { color: isDark ? '#fff' : '#000' }]}>
+                      {currency}{expense.amount.toFixed(2)}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => handleDeleteExpense(expense.id, expense.name)}
+                    style={styles.deleteButton}
+                  >
+                    <IconSymbol
+                      ios_icon_name="trash"
+                      android_material_icon_name="delete"
+                      size={20}
+                      color="#ff3b30"
+                    />
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </React.Fragment>
           )}
         </View>
       </ScrollView>

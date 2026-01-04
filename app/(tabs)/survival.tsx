@@ -56,7 +56,7 @@ export default function SurvivalScreen() {
         </View>
 
         {survivalMode && (
-          <>
+          <React.Fragment>
             <View style={[styles.infoCard, { backgroundColor: isDark ? '#1e3a2e' : '#e8f5f0' }]}>
               <Text style={[styles.infoTitle, { color: isDark ? '#90d4b8' : '#2d8a5f' }]}>
                 💡 Potential Savings
@@ -79,24 +79,26 @@ export default function SurvivalScreen() {
                 </Text>
               </View>
             ) : (
-              nonEssentialExpenses.map(expense => (
-                <View
-                  key={expense.id}
-                  style={[styles.expenseCard, { backgroundColor: isDark ? '#3a1e1e' : '#fff5f5', borderColor: isDark ? '#5a2e2e' : '#ffe0e0' }]}
-                >
-                  <View style={styles.expenseInfo}>
-                    <Text style={[styles.expenseName, { color: isDark ? '#ffb0b0' : '#d63031' }]}>
-                      {expense.name}
-                    </Text>
-                    <Text style={[styles.expenseHint, { color: isDark ? '#d08080' : '#e17055' }]}>
-                      Consider pausing or removing this
+              <React.Fragment>
+                {nonEssentialExpenses.map((expense, index) => (
+                  <View
+                    key={`${expense.id}-${index}`}
+                    style={[styles.expenseCard, { backgroundColor: isDark ? '#3a1e1e' : '#fff5f5', borderColor: isDark ? '#5a2e2e' : '#ffe0e0' }]}
+                  >
+                    <View style={styles.expenseInfo}>
+                      <Text style={[styles.expenseName, { color: isDark ? '#ffb0b0' : '#d63031' }]}>
+                        {expense.name}
+                      </Text>
+                      <Text style={[styles.expenseHint, { color: isDark ? '#d08080' : '#e17055' }]}>
+                        Consider pausing or removing this
+                      </Text>
+                    </View>
+                    <Text style={[styles.expenseAmount, { color: isDark ? '#ffb0b0' : '#d63031' }]}>
+                      {currency}{expense.amount.toFixed(2)}
                     </Text>
                   </View>
-                  <Text style={[styles.expenseAmount, { color: isDark ? '#ffb0b0' : '#d63031' }]}>
-                    {currency}{expense.amount.toFixed(2)}
-                  </Text>
-                </View>
-              ))
+                ))}
+              </React.Fragment>
             )}
 
             <View style={[styles.tipsCard, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}>
@@ -110,7 +112,7 @@ export default function SurvivalScreen() {
                 • Look for free entertainment options
               </Text>
             </View>
-          </>
+          </React.Fragment>
         )}
 
         {!survivalMode && (

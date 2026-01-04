@@ -38,6 +38,13 @@ const BudgetContext = createContext<BudgetContextType | undefined>(undefined);
 
 const STORAGE_KEY = '@budget_data';
 
+// Generate a more unique ID
+let idCounter = 0;
+function generateUniqueId(): string {
+  idCounter++;
+  return `${Date.now()}-${idCounter}-${Math.random().toString(36).substr(2, 9)}`;
+}
+
 export function useBudget() {
   const context = useContext(BudgetContext);
   if (!context) {
@@ -105,7 +112,7 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
   const addExpense = (expense: Omit<Expense, 'id' | 'date'>) => {
     const newExpense: Expense = {
       ...expense,
-      id: Date.now().toString(),
+      id: generateUniqueId(),
       date: new Date().toISOString(),
     };
     setData(prev => ({ ...prev, expenses: [...prev.expenses, newExpense] }));

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   Alert,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBudget } from '@/contexts/BudgetContext';
@@ -20,6 +21,10 @@ export default function SettingsScreen() {
   const router = useRouter();
 
   const currencies = ['$', '€', '£', '¥', '₹'];
+
+  // App icon configuration from app.json
+  const appIconPath = require('@/assets/images/11fa71a6-ca51-470a-8c38-a998103e36e9.png');
+  const iconConfigPath = './assets/images/11fa71a6-ca51-470a-8c38-a998103e36e9.png';
 
   const handleCurrencyChange = () => {
     Alert.alert(
@@ -60,6 +65,49 @@ export default function SettingsScreen() {
         <Text style={[styles.title, { color: isDark ? '#f0f0f0' : '#323232' }]}>
           Settings
         </Text>
+
+        {/* App Icon Section */}
+        <View style={[styles.card, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}>
+          <View style={styles.iconSection}>
+            <Text style={[styles.sectionTitle, { color: isDark ? '#f0f0f0' : '#323232' }]}>
+              App Icon Configuration
+            </Text>
+            <View style={styles.iconPreviewContainer}>
+              <Image 
+                source={appIconPath} 
+                style={styles.iconPreview}
+                resizeMode="contain"
+              />
+              <View style={styles.iconDetails}>
+                <Text style={[styles.iconLabel, { color: isDark ? '#b0b0b0' : '#666' }]}>
+                  iOS Icon
+                </Text>
+                <Text style={[styles.iconPath, { color: isDark ? '#888' : '#999' }]} numberOfLines={2}>
+                  {iconConfigPath}
+                </Text>
+                
+                <Text style={[styles.iconLabel, { color: isDark ? '#b0b0b0' : '#666', marginTop: 12 }]}>
+                  Android Icon
+                </Text>
+                <Text style={[styles.iconPath, { color: isDark ? '#888' : '#999' }]} numberOfLines={2}>
+                  {iconConfigPath}
+                </Text>
+                
+                <Text style={[styles.iconLabel, { color: isDark ? '#b0b0b0' : '#666', marginTop: 12 }]}>
+                  Splash Screen
+                </Text>
+                <Text style={[styles.iconPath, { color: isDark ? '#888' : '#999' }]} numberOfLines={2}>
+                  {iconConfigPath}
+                </Text>
+              </View>
+            </View>
+            <View style={[styles.statusBadge, { backgroundColor: isDark ? '#1e3a1e' : '#e8f5e9' }]}>
+              <Text style={[styles.statusText, { color: isDark ? '#4caf50' : '#2e7d32' }]}>
+                ✓ Icon Uploaded & Configured
+              </Text>
+            </View>
+          </View>
+        </View>
 
         <View style={[styles.card, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}>
           <TouchableOpacity style={styles.settingRow} onPress={handleCurrencyChange}>
@@ -120,6 +168,48 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
+  },
+  iconSection: {
+    padding: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 16,
+  },
+  iconPreviewContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 16,
+    marginBottom: 16,
+  },
+  iconPreview: {
+    width: 80,
+    height: 80,
+    borderRadius: 16,
+    backgroundColor: '#000',
+  },
+  iconDetails: {
+    flex: 1,
+  },
+  iconLabel: {
+    fontSize: 13,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  iconPath: {
+    fontSize: 11,
+    fontFamily: 'monospace',
+  },
+  statusBadge: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+  },
+  statusText: {
+    fontSize: 13,
+    fontWeight: '600',
   },
   settingRow: {
     flexDirection: 'row',

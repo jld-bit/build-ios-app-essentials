@@ -12,7 +12,6 @@ export interface Expense {
 
 interface BudgetData {
   monthlyIncome: number;
-  totalSavings: number;
   expenses: Expense[];
   survivalMode: boolean;
   currency: string;
@@ -20,12 +19,10 @@ interface BudgetData {
 
 interface BudgetContextType {
   monthlyIncome: number;
-  totalSavings: number;
   expenses: Expense[];
   survivalMode: boolean;
   currency: string;
   setMonthlyIncome: (amount: number) => void;
-  setTotalSavings: (amount: number) => void;
   addExpense: (expense: Omit<Expense, 'id' | 'date'>) => void;
   deleteExpense: (id: string) => void;
   toggleSurvivalMode: () => void;
@@ -49,7 +46,6 @@ export function useBudget() {
 export function BudgetProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<BudgetData>({
     monthlyIncome: 0,
-    totalSavings: 0,
     expenses: [],
     survivalMode: false,
     currency: '$',
@@ -70,7 +66,15 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     try {
       const stored = await AsyncStorage.getItem(STORAGE_KEY);
       if (stored) {
-        setData(JSON.parse(stored));
+        const parsedData = JSON.parse(stored);
+        // Remove totalSavings if it exists in old data
+        const { totalSavings, ...cleanData } = parsedData;
+        setData({
+          monthlyIncome: cleanData.monthlyIncome || 0,
+          expenses: cleanData.expenses || [],
+          survivalMode: cleanData.survivalMode || false,
+          currency: cleanData.currency || '$',
+        });
       }
     } catch (error) {
       console.error('Error loading data:', error);
@@ -89,10 +93,6 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
 
   const setMonthlyIncome = (amount: number) => {
     setData(prev => ({ ...prev, monthlyIncome: amount }));
-  };
-
-  const setTotalSavings = (amount: number) => {
-    setData(prev => ({ ...prev, totalSavings: amount }));
   };
 
   const addExpense = (expense: Omit<Expense, 'id' | 'date'>) => {
@@ -122,7 +122,6 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
   const resetData = async () => {
     const newData: BudgetData = {
       monthlyIncome: 0,
-      totalSavings: 0,
       expenses: [],
       survivalMode: false,
       currency: '$',
@@ -136,7 +135,6 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       value={{
         ...data,
         setMonthlyIncome,
-        setTotalSavings,
         addExpense,
         deleteExpense,
         toggleSurvivalMode,

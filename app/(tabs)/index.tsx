@@ -16,18 +16,15 @@ import { useBudget } from '@/contexts/BudgetContext';
 export default function OverviewScreen() {
   const {
     monthlyIncome,
-    totalSavings,
     expenses,
     currency,
     setMonthlyIncome,
-    setTotalSavings,
     loading,
   } = useBudget();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
   const [incomeInput, setIncomeInput] = useState(monthlyIncome.toString());
-  const [savingsInput, setSavingsInput] = useState(totalSavings.toString());
 
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const essentialExpenses = expenses
@@ -69,26 +66,6 @@ export default function OverviewScreen() {
               value={incomeInput}
               onChangeText={setIncomeInput}
               onBlur={() => setMonthlyIncome(parseFloat(incomeInput) || 0)}
-              keyboardType="numeric"
-              placeholder="0"
-              placeholderTextColor={isDark ? '#666' : '#999'}
-            />
-          </View>
-        </View>
-
-        <View style={[styles.card, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}>
-          <Text style={[styles.label, { color: isDark ? '#b0b0b0' : '#666' }]}>
-            Total Savings
-          </Text>
-          <View style={styles.inputRow}>
-            <Text style={[styles.currencySymbol, { color: isDark ? '#f0f0f0' : '#323232' }]}>
-              {currency}
-            </Text>
-            <TextInput
-              style={[styles.input, { color: isDark ? '#f0f0f0' : '#323232', borderColor: isDark ? '#323232' : '#dcdcdc' }]}
-              value={savingsInput}
-              onChangeText={setSavingsInput}
-              onBlur={() => setTotalSavings(parseFloat(savingsInput) || 0)}
               keyboardType="numeric"
               placeholder="0"
               placeholderTextColor={isDark ? '#666' : '#999'}

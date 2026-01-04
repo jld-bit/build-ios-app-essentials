@@ -1,14 +1,15 @@
+
 {
   "expo": {
     "name": "Natively",
     "slug": "Natively",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/19ca2740-d0a7-4034-ba01-4710488ac9b4.png",
+    "icon": "./assets/images/45b935f7-5a64-4721-95aa-d22546dc5427.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/19ca2740-d0a7-4034-ba01-4710488ac9b4.png",
+      "image": "./assets/images/45b935f7-5a64-4721-95aa-d22546dc5427.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -21,14 +22,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/19ca2740-d0a7-4034-ba01-4710488ac9b4.png",
+        "foregroundImage": "./assets/images/45b935f7-5a64-4721-95aa-d22546dc5427.png",
         "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.anonymous.Natively"
     },
     "web": {
-      "favicon": "./assets/images/19ca2740-d0a7-4034-ba01-4710488ac9b4.png",
+      "favicon": "./assets/images/final_quest_240x240.png",
       "bundler": "metro"
     },
     "plugins": [
@@ -41,8 +42,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
-      "backendUrl": "https://p224e2efg43t5hxxxsagexa4xwgxbw4n.app.specular.dev"
+      "router": {}
     }
   }
 }

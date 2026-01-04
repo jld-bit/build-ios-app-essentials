@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useBudget } from '@/contexts/BudgetContext';
 import {
   View,
   Text,
@@ -11,152 +11,141 @@ import {
   Alert,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useBudget } from '@/contexts/BudgetContext';
+import React, { useState } from 'react';
+import { IconSymbol } from '@/components/IconSymbol';
 
 export default function ExpensesScreen() {
-  const { expenses, currency, addExpense, deleteExpense } = useBudget();
+  const [expenseName, setExpenseName] = useState('');
+  const [expenseAmount, setExpenseAmount] = useState('');
   const colorScheme = useColorScheme();
+  const { expenses, addExpense, deleteExpense, currency } = useBudget();
+
   const isDark = colorScheme === 'dark';
 
-  const [name, setName] = useState('');
-  const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState<'essential' | 'non-essential'>('essential');
-
   const handleAddExpense = () => {
-    if (!name.trim() || !amount) {
-      Alert.alert('Missing Information', 'Please enter both name and amount');
+    if (!expenseName.trim() || !expenseAmount.trim()) {
+      Alert.alert('Error', 'Please enter both expense name and amount');
       return;
     }
+
+    const amount = parseFloat(expenseAmount);
+    if (isNaN(amount) || amount <= 0) {
+      Alert.alert('Error', 'Please enter a valid amount');
+      return;
+    }
+
     addExpense({
-      name: name.trim(),
-      amount: parseFloat(amount),
-      category,
+      name: expenseName.trim(),
+      amount,
     });
-    setName('');
-    setAmount('');
+
+    setExpenseName('');
+    setExpenseAmount('');
   };
 
   const handleDeleteExpense = (id: string, expenseName: string) => {
     Alert.alert(
       'Delete Expense',
-      `Remove "${expenseName}"?`,
+      `Are you sure you want to delete "${expenseName}"?`,
       [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Delete', style: 'destructive', onPress: () => deleteExpense(id) },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => deleteExpense(id),
+        },
       ]
     );
   };
 
-  return (
-    <SafeAreaView style={[styles.container, { backgroundColor: isDark ? '#141414' : '#fafafa' }]} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={[styles.title, { color: isDark ? '#f0f0f0' : '#323232' }]}>
-          Expenses
-        </Text>
-        <Text style={[styles.subtitle, { color: isDark ? '#b0b0b0' : '#666' }]}>
-          Track where your money goes
-        </Text>
+  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
 
-        <View style={[styles.card, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}>
-          <Text style={[styles.cardTitle, { color: isDark ? '#f0f0f0' : '#323232' }]}>
-            Add New Expense
-          </Text>
+  return (
+    <SafeAreaView style={[styles.container, { backgroundColor: isDark ? '#000' : '#fff' }]} edges={['top']}>
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+        <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>Monthly Expenses</Text>
+
+        <View style={[styles.card, { backgroundColor: isDark ? '#1c1c1e' : '#f2f2f7' }]}>
+          <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Expense Name</Text>
           <TextInput
-            style={[styles.input, { color: isDark ? '#f0f0f0' : '#323232', borderColor: isDark ? '#323232' : '#dcdcdc', backgroundColor: isDark ? '#141414' : '#fafafa' }]}
-            placeholder="Expense name"
-            placeholderTextColor={isDark ? '#666' : '#999'}
-            value={name}
-            onChangeText={setName}
+            style={[
+              styles.input,
+              {
+                backgroundColor: isDark ? '#2c2c2e' : '#fff',
+                color: isDark ? '#fff' : '#000',
+              },
+            ]}
+            placeholder="e.g., Rent, Groceries"
+            placeholderTextColor={isDark ? '#8e8e93' : '#999'}
+            value={expenseName}
+            onChangeText={setExpenseName}
           />
-          <View style={styles.amountRow}>
-            <Text style={[styles.currencySymbol, { color: isDark ? '#f0f0f0' : '#323232' }]}>
-              {currency}
-            </Text>
-            <TextInput
-              style={[styles.input, styles.amountInput, { color: isDark ? '#f0f0f0' : '#323232', borderColor: isDark ? '#323232' : '#dcdcdc', backgroundColor: isDark ? '#141414' : '#fafafa' }]}
-              placeholder="0.00"
-              placeholderTextColor={isDark ? '#666' : '#999'}
-              value={amount}
-              onChangeText={setAmount}
-              keyboardType="numeric"
-            />
-          </View>
-          <View style={styles.categoryRow}>
-            <TouchableOpacity
-              style={[
-                styles.categoryButton,
-                category === 'essential' && styles.categoryButtonActive,
-                { borderColor: isDark ? '#323232' : '#dcdcdc' },
-              ]}
-              onPress={() => setCategory('essential')}
-            >
-              <Text style={[
-                styles.categoryButtonText,
-                category === 'essential' && styles.categoryButtonTextActive,
-                { color: category === 'essential' ? '#fff' : (isDark ? '#b0b0b0' : '#666') },
-              ]}>
-                Essential
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.categoryButton,
-                category === 'non-essential' && styles.categoryButtonActive,
-                { borderColor: isDark ? '#323232' : '#dcdcdc' },
-              ]}
-              onPress={() => setCategory('non-essential')}
-            >
-              <Text style={[
-                styles.categoryButtonText,
-                category === 'non-essential' && styles.categoryButtonTextActive,
-                { color: category === 'non-essential' ? '#fff' : (isDark ? '#b0b0b0' : '#666') },
-              ]}>
-                Non-Essential
-              </Text>
-            </TouchableOpacity>
-          </View>
+
+          <Text style={[styles.label, { color: isDark ? '#fff' : '#000' }]}>Amount ({currency})</Text>
+          <TextInput
+            style={[
+              styles.input,
+              {
+                backgroundColor: isDark ? '#2c2c2e' : '#fff',
+                color: isDark ? '#fff' : '#000',
+              },
+            ]}
+            placeholder="0"
+            placeholderTextColor={isDark ? '#8e8e93' : '#999'}
+            keyboardType="numeric"
+            value={expenseAmount}
+            onChangeText={setExpenseAmount}
+          />
+
           <TouchableOpacity style={styles.addButton} onPress={handleAddExpense}>
             <Text style={styles.addButtonText}>Add Expense</Text>
           </TouchableOpacity>
         </View>
 
-        <Text style={[styles.sectionTitle, { color: isDark ? '#f0f0f0' : '#323232' }]}>
-          Your Expenses
-        </Text>
-        {expenses.length === 0 ? (
-          <View style={[styles.emptyCard, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}>
-            <Text style={[styles.emptyText, { color: isDark ? '#b0b0b0' : '#666' }]}>
-              No expenses yet. Add one above to get started.
+        <View style={[styles.card, { backgroundColor: isDark ? '#1c1c1e' : '#f2f2f7' }]}>
+          <Text style={[styles.sectionTitle, { color: isDark ? '#fff' : '#000' }]}>
+            Your Expenses
+          </Text>
+          <Text style={[styles.totalText, { color: isDark ? '#8e8e93' : '#666' }]}>
+            Total: {currency}{totalExpenses.toFixed(2)}
+          </Text>
+
+          {expenses.length === 0 ? (
+            <Text style={[styles.emptyText, { color: isDark ? '#8e8e93' : '#999' }]}>
+              No expenses added yet
             </Text>
-          </View>
-        ) : (
-          expenses.map(expense => (
-            <View
-              key={expense.id}
-              style={[styles.expenseCard, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}
-            >
-              <View style={styles.expenseInfo}>
-                <Text style={[styles.expenseName, { color: isDark ? '#f0f0f0' : '#323232' }]}>
-                  {expense.name}
-                </Text>
-                <Text style={[styles.expenseCategory, { color: isDark ? '#b0b0b0' : '#666' }]}>
-                  {expense.category === 'essential' ? '🛡️ Essential' : '✨ Non-Essential'}
-                </Text>
-              </View>
-              <View style={styles.expenseRight}>
-                <Text style={[styles.expenseAmount, { color: isDark ? '#f0f0f0' : '#323232' }]}>
-                  {currency}{expense.amount.toFixed(2)}
-                </Text>
+          ) : (
+            expenses.map((expense) => (
+              <View
+                key={expense.id}
+                style={[
+                  styles.expenseItem,
+                  { backgroundColor: isDark ? '#2c2c2e' : '#fff' },
+                ]}
+              >
+                <View style={styles.expenseInfo}>
+                  <Text style={[styles.expenseName, { color: isDark ? '#fff' : '#000' }]}>
+                    {expense.name}
+                  </Text>
+                  <Text style={[styles.expenseAmount, { color: isDark ? '#fff' : '#000' }]}>
+                    {currency}{expense.amount.toFixed(2)}
+                  </Text>
+                </View>
                 <TouchableOpacity
                   onPress={() => handleDeleteExpense(expense.id, expense.name)}
                   style={styles.deleteButton}
                 >
-                  <Text style={styles.deleteButtonText}>✕</Text>
+                  <IconSymbol
+                    ios_icon_name="trash"
+                    android_material_icon_name="delete"
+                    size={20}
+                    color="#ff3b30"
+                  />
                 </TouchableOpacity>
               </View>
-            </View>
-          ))
-        )}
+            ))
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -166,81 +155,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollView: {
+    flex: 1,
+  },
   scrollContent: {
     padding: 20,
     paddingBottom: 100,
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
     marginBottom: 24,
   },
   card: {
     borderRadius: 16,
     padding: 20,
-    marginBottom: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    marginBottom: 20,
   },
-  cardTitle: {
-    fontSize: 18,
+  label: {
+    fontSize: 16,
     fontWeight: '600',
-    marginBottom: 16,
+    marginBottom: 8,
+    marginTop: 12,
   },
   input: {
-    borderWidth: 1,
     borderRadius: 12,
-    padding: 12,
+    padding: 16,
     fontSize: 16,
-    marginBottom: 12,
-  },
-  amountRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  currencySymbol: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginRight: 8,
-  },
-  amountInput: {
-    flex: 1,
-  },
-  categoryRow: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 16,
-  },
-  categoryButton: {
-    flex: 1,
-    borderWidth: 2,
-    borderRadius: 12,
-    padding: 12,
-    alignItems: 'center',
-  },
-  categoryButtonActive: {
-    backgroundColor: '#64c896',
-    borderColor: '#64c896',
-  },
-  categoryButtonText: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  categoryButtonTextActive: {
-    color: '#fff',
+    marginBottom: 8,
   },
   addButton: {
-    backgroundColor: '#64c896',
+    backgroundColor: '#007AFF',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
+    marginTop: 16,
   },
   addButtonText: {
     color: '#fff',
@@ -249,30 +198,25 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: '600',
-    marginBottom: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
-  emptyCard: {
-    borderRadius: 16,
-    padding: 32,
-    alignItems: 'center',
+  totalText: {
+    fontSize: 16,
+    marginBottom: 16,
   },
   emptyText: {
     fontSize: 16,
     textAlign: 'center',
+    marginTop: 20,
   },
-  expenseCard: {
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
+  expenseItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    justifyContent: 'space-between',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 8,
   },
   expenseInfo: {
     flex: 1,
@@ -282,29 +226,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 4,
   },
-  expenseCategory: {
+  expenseAmount: {
     fontSize: 14,
   },
-  expenseRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  expenseAmount: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
   deleteButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#ff6b6b',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  deleteButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    padding: 8,
   },
 });

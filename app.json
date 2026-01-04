@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Essential Only",
-    "slug": "essential-only",
+    "name": "Build iOS App",
+    "slug": "Build iOS App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/final_quest_240x240.png",
@@ -44,5 +44,6 @@
       "router": {},
       "backendUrl": "https://p224e2efg43t5hxxxsagexa4xwgxbw4n.app.specular.dev"
     }
-  }
+  },
+  "scheme": "Build iOS App"
 }

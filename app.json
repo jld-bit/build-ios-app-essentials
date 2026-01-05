@@ -1,16 +1,17 @@
+
 {
   "expo": {
-    "name": "Build iOS App",
-    "slug": "Build iOS App",
+    "name": "Natively",
+    "slug": "Natively",
     "version": "2.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/73b01f9b-62d8-4b84-89f4-cc36ec3242e9.png",
+    "icon": "./assets/images/natively-dark.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/73b01f9b-62d8-4b84-89f4-cc36ec3242e9.png",
+      "image": "./assets/images/natively-dark.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true,
@@ -21,14 +22,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/73b01f9b-62d8-4b84-89f4-cc36ec3242e9.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/natively-dark.png",
+        "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.anonymous.Natively"
     },
     "web": {
-      "favicon": "./assets/images/73b01f9b-62d8-4b84-89f4-cc36ec3242e9.png",
+      "favicon": "./assets/images/final_quest_240x240.png",
       "bundler": "metro"
     },
     "plugins": [
@@ -41,9 +42,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "router": {},
-      "backendUrl": "https://p224e2efg43t5hxxxsagexa4xwgxbw4n.app.specular.dev"
+      "router": {}
     }
-  },
-  "scheme": "Build iOS App"
+  }
 }

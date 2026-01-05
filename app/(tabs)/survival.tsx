@@ -79,26 +79,24 @@ export default function SurvivalScreen() {
                 </Text>
               </View>
             ) : (
-              <React.Fragment>
-                {nonEssentialExpenses.map((expense, index) => (
-                  <View
-                    key={`${expense.id}-${index}`}
-                    style={[styles.expenseCard, { backgroundColor: isDark ? '#3a1e1e' : '#fff5f5', borderColor: isDark ? '#5a2e2e' : '#ffe0e0' }]}
-                  >
-                    <View style={styles.expenseInfo}>
-                      <Text style={[styles.expenseName, { color: isDark ? '#ffb0b0' : '#d63031' }]}>
-                        {expense.name}
-                      </Text>
-                      <Text style={[styles.expenseHint, { color: isDark ? '#d08080' : '#e17055' }]}>
-                        Consider pausing or removing this
-                      </Text>
-                    </View>
-                    <Text style={[styles.expenseAmount, { color: isDark ? '#ffb0b0' : '#d63031' }]}>
-                      {currency}{expense.amount.toFixed(2)}
+              nonEssentialExpenses.map((expense, index) => (
+                <View
+                  key={expense.id}
+                  style={[styles.expenseCard, { backgroundColor: isDark ? '#3a1e1e' : '#fff5f5', borderColor: isDark ? '#5a2e2e' : '#ffe0e0' }]}
+                >
+                  <View style={styles.expenseInfo}>
+                    <Text style={[styles.expenseName, { color: isDark ? '#ffb0b0' : '#d63031' }]}>
+                      {expense.name}
+                    </Text>
+                    <Text style={[styles.expenseHint, { color: isDark ? '#d08080' : '#e17055' }]}>
+                      Consider pausing or removing this
                     </Text>
                   </View>
-                ))}
-              </React.Fragment>
+                  <Text style={[styles.expenseAmount, { color: isDark ? '#ffb0b0' : '#d63031' }]}>
+                    {currency}{expense.amount.toFixed(2)}
+                  </Text>
+                </View>
+              ))
             )}
 
             <View style={[styles.tipsCard, { backgroundColor: isDark ? '#1e1e1e' : '#fff' }]}>

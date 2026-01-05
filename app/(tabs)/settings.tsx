@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useBudget } from '@/contexts/BudgetContext';
 import { useRouter } from 'expo-router';
+import appJson from '../../app.json';
 
 export default function SettingsScreen() {
   const { currency, setCurrency, resetData } = useBudget();
@@ -92,7 +93,7 @@ export default function SettingsScreen() {
         </TouchableOpacity>
 
         <Text style={[styles.version, { color: isDark ? '#666' : '#999' }]}>
-          Budget App v1.0
+          Budget App v{appJson.expo.version}
         </Text>
       </ScrollView>
     </SafeAreaView>

@@ -26,8 +26,8 @@ export default function OverviewScreen() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
-  const [incomeInput, setIncomeInput] = useState(monthlyIncome.toString());
-  const [savingsInput, setSavingsInput] = useState(totalSavings.toString());
+  const [incomeInput, setIncomeInput] = useState(monthlyIncome !== null ? monthlyIncome.toString() : '');
+  const [savingsInput, setSavingsInput] = useState(totalSavings !== null ? totalSavings.toString() : '');
 
   const totalExpenses = expenses.reduce((sum, exp) => sum + exp.amount, 0);
   const essentialExpenses = expenses
@@ -36,10 +36,10 @@ export default function OverviewScreen() {
   const nonEssentialExpenses = expenses
     .filter(e => e.category === 'non-essential')
     .reduce((sum, exp) => sum + exp.amount, 0);
-  const remaining = monthlyIncome - totalExpenses;
+  const remaining = (monthlyIncome ?? 0) - totalExpenses;
 
   // Calculate Months of Runway
-  const monthsOfRunway = totalExpenses > 0 ? totalSavings / totalExpenses : 0;
+  const monthsOfRunway = totalExpenses > 0 ? (totalSavings ?? 0) / totalExpenses : 0;
 
   if (loading) {
     return (
@@ -71,7 +71,10 @@ export default function OverviewScreen() {
               style={[styles.input, { color: isDark ? '#f0f0f0' : '#323232', borderColor: isDark ? '#323232' : '#dcdcdc' }]}
               value={incomeInput}
               onChangeText={setIncomeInput}
-              onBlur={() => setMonthlyIncome(parseFloat(incomeInput) || 0)}
+              onBlur={() => {
+                const value = incomeInput.trim() === '' ? null : parseFloat(incomeInput);
+                setMonthlyIncome(value);
+              }}
               keyboardType="numeric"
               placeholder="0"
               placeholderTextColor={isDark ? '#666' : '#999'}
@@ -91,7 +94,10 @@ export default function OverviewScreen() {
               style={[styles.input, { color: isDark ? '#f0f0f0' : '#323232', borderColor: isDark ? '#323232' : '#dcdcdc' }]}
               value={savingsInput}
               onChangeText={setSavingsInput}
-              onBlur={() => setTotalSavings(parseFloat(savingsInput) || 0)}
+              onBlur={() => {
+                const value = savingsInput.trim() === '' ? null : parseFloat(savingsInput);
+                setTotalSavings(value);
+              }}
               keyboardType="numeric"
               placeholder="0"
               placeholderTextColor={isDark ? '#666' : '#999'}
@@ -108,12 +114,12 @@ export default function OverviewScreen() {
               {monthsOfRunway.toFixed(1)} months
             </Text>
             <Text style={[styles.runwayFormula, { color: isDark ? '#808080' : '#999' }]}>
-              {currency}{totalSavings.toFixed(2)} ÷ {currency}{totalExpenses.toFixed(2)} = {monthsOfRunway.toFixed(1)} months
+              {currency}{(totalSavings ?? 0).toFixed(2)} ÷ {currency}{totalExpenses.toFixed(2)} = {monthsOfRunway.toFixed(1)} months
             </Text>
           </View>
         )}
 
-        {totalExpenses === 0 && totalSavings > 0 && (
+        {totalExpenses === 0 && (totalSavings ?? 0) > 0 && (
           <View style={[styles.runwayCard, { backgroundColor: isDark ? '#2a2a3e' : '#f0f4ff' }]}>
             <Text style={[styles.runwayLabel, { color: isDark ? '#b0b0b0' : '#666' }]}>
               Months of Runway

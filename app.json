@@ -5,11 +5,11 @@
     "slug": "Natively",
     "version": "2.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/natively-dark.png",
+    "icon": "./assets/images/010cd5bc-84fc-4e89-9b70-7393011e77f4.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/natively-dark.png",
+      "image": "./assets/images/010cd5bc-84fc-4e89-9b70-7393011e77f4.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/natively-dark.png",
+        "foregroundImage": "./assets/images/010cd5bc-84fc-4e89-9b70-7393011e77f4.png",
         "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,

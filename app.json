@@ -2,34 +2,34 @@
 {
   "expo": {
     "name": "Essentials Only",
-    "slug": "Natively",
+    "slug": "essentials-only",
     "version": "2.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/e05b4f1d-79e1-4526-85d1-a21f95785f53.png",
+    "icon": "./assets/images/d6de2104-2eef-48cb-b764-28a7856fcd0d.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/e05b4f1d-79e1-4526-85d1-a21f95785f53.png",
+      "image": "./assets/images/d6de2104-2eef-48cb-b764-28a7856fcd0d.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.Natively",
+      "bundleIdentifier": "com.poppyseedla.essentialsonly",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/e05b4f1d-79e1-4526-85d1-a21f95785f53.png",
+        "foregroundImage": "./assets/images/d6de2104-2eef-48cb-b764-28a7856fcd0d.png",
         "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.Natively"
+      "package": "com.poppyseedla.essentialsonly"
     },
     "web": {
-      "favicon": "./assets/images/e05b4f1d-79e1-4526-85d1-a21f95785f53.png",
+      "favicon": "./assets/images/final_quest_240x240.png",
       "bundler": "metro"
     },
     "plugins": [
@@ -37,7 +37,7 @@
       "expo-router",
       "expo-web-browser"
     ],
-    "scheme": "natively",
+    "scheme": "essentialsonly",
     "experiments": {
       "typedRoutes": true
     },

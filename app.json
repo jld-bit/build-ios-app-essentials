@@ -2,14 +2,14 @@
 {
   "expo": {
     "name": "Essentials Only",
-    "slug": "Essentials-Only",
+    "slug": "Natively",
     "version": "2.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/natively-dark.png",
+    "icon": "./assets/images/e05b4f1d-79e1-4526-85d1-a21f95785f53.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/natively-dark.png",
+      "image": "./assets/images/e05b4f1d-79e1-4526-85d1-a21f95785f53.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -22,14 +22,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/natively-dark.png",
+        "foregroundImage": "./assets/images/e05b4f1d-79e1-4526-85d1-a21f95785f53.png",
         "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.anonymous.Natively"
     },
     "web": {
-      "favicon": "./assets/images/final_quest_240x240.png",
+      "favicon": "./assets/images/e05b4f1d-79e1-4526-85d1-a21f95785f53.png",
       "bundler": "metro"
     },
     "plugins": [
@@ -37,7 +37,7 @@
       "expo-router",
       "expo-web-browser"
     ],
-    "scheme": "essentials-only",
+    "scheme": "natively",
     "experiments": {
       "typedRoutes": true
     },
